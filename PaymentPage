@@ -1,0 +1,82 @@
+import javax.swing.*;
+import java.awt.*;
+import java.util.Date;
+
+public class PaymentPage extends JFrame {
+
+    public PaymentPage(String name, String email, String phone,
+                       String car, Date pickup, Date drop,
+                       String pickupLoc, String dropoffLoc) {
+
+        setTitle("Payment Page");
+        setSize(500, 450);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLayout(new BorderLayout());
+
+        // ---- Booking Summary (top panel) ----
+        JTextArea summary = new JTextArea();
+        summary.setEditable(false);
+        summary.setText("Booking Summary:\n\n"
+                + "Name: " + name + "\n"
+                + "Email: " + email + "\n"
+                + "Phone: " + phone + "\n"
+                + "Car: " + car + "\n"
+                + "Pickup: " + pickup + "\n"
+                + "Drop: " + drop + "\n"
+                + "Pickup Location: " + pickupLoc + "\n"
+                + "Drop-off Location: " + dropoffLoc + "\n");
+        summary.setBorder(BorderFactory.createTitledBorder("Booking Details"));
+
+        add(new JScrollPane(summary), BorderLayout.NORTH);
+
+        // ---- Payment form (center) ----
+        JPanel form = new JPanel(new GridLayout(5, 2, 10, 10));
+        form.setBorder(BorderFactory.createTitledBorder("Payment Information"));
+
+        JTextField cardNumber = new JTextField();
+        JTextField cardName = new JTextField();
+        JTextField expiry = new JTextField("MM/YY");
+        JTextField cvv = new JTextField();
+
+        form.add(new JLabel("Card Number:"));
+        form.add(cardNumber);
+        form.add(new JLabel("Cardholder Name:"));
+        form.add(cardName);
+        form.add(new JLabel("Expiry Date:"));
+        form.add(expiry);
+        form.add(new JLabel("CVV:"));
+        form.add(cvv);
+
+        add(form, BorderLayout.CENTER);
+
+        // ---- Buttons (bottom) ----
+        JPanel buttons = new JPanel();
+        JButton payBtn = new JButton("Pay Now");
+        JButton cancelBtn = new JButton("Cancel");
+
+        buttons.add(payBtn);
+        buttons.add(cancelBtn);
+
+        add(buttons, BorderLayout.SOUTH);
+
+        // ---- Button actions ----
+        payBtn.addActionListener(e -> {
+            if (cardNumber.getText().trim().isEmpty()
+                    || cardName.getText().trim().isEmpty()
+                    || expiry.getText().trim().isEmpty()
+                    || cvv.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this,
+                        "Please fill all payment details!",
+                        "Validation", JOptionPane.WARNING_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "Payment Successful! Thank you for booking.",
+                        "Success", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+            }
+        });
+
+        cancelBtn.addActionListener(e -> this.dispose());
+    }
+}
